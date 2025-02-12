@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovation Logo Generator</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #141e30, #243b55);
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        /* Container */
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 90%;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Buttons */
+        button {
+            padding: 12px 20px;
+            margin: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .sign-btn {
+            background: #007bff;
+            color: white;
+        }
+
+        .sign-btn:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .generate-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .generate-btn:hover {
+            background: #218838;
+            transform: scale(1.05);
+        }
+
+        /* Input Field */
+        input {
+            width: 80%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            margin-top: 10px;
+            outline: none;
+        }
+
+        /* Result Box */
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(5px);
+            display: none;
+        }
+
+        /* Canvas Styling */
+        canvas {
+            margin-top: 20px;
+            border: 2px solid #ddd;
+            background-color: #1f3c88; /* Blue background */
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>AI Logo Generator</h1>
+        <button class="sign-btn" onclick="signUp()">Sign Up / Login</button>
+
+        <p id="welcomeMessage">Sign up to personalize your experience (optional).</p>
+
+        <input type="text" id="prompt" placeholder="Enter logo text">
+        <button class="generate-btn" onclick="generateLogo()">Generate Logo</button>
+
+        <div class="result-box" id="resultBox">
+            <h3 id="message"></h3>
+            <canvas id="logoCanvas" width="300" height="300"></canvas>
+        </div>
+    </div>
+
+    <script>
+        function signUp() {
+            let user = localStorage.getItem("user");
+            if (!user) {
+                let name = prompt("Enter your name (optional):");
+                if (name) {
+                    localStorage.setItem("user", name);
+                    document.getElementById("welcomeMessage").innerText = `Welcome, ${name}! Enjoy unlimited free logo generation.`;
+                }
+            } else {
+                alert("You're already signed in as " + user);
+            }
+        }
+
+        function generateLogo() {
+            let prompt = document.getElementById("prompt").value.trim().toUpperCase();
+            let message = document.getElementById("message");
+            let resultBox = document.getElementById("resultBox");
+            let canvas = document.getElementById("logoCanvas");
+            let ctx = canvas.getContext("2d");
+
+            if (!prompt) {
+                alert("Please enter logo text.");
+                return;
+            }
+
+            message.innerText = "Generated Logo:";
+            resultBox.style.display = "block";
+
+            // Clear previous logo
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw background
+            ctx.fillStyle = "#1f3c88"; // Blue background
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw yellow circle
+            ctx.fillStyle = "#ffde59"; // Yellow color
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2, 100, 50, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Draw letter inside circle
+            ctx.fillStyle = "#1f3c88"; // Dark blue text
+            ctx.font = "bold 40px Poppins";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(prompt[0], canvas.width / 2, 100);
+
+            // Draw logo text below
+            ctx.fillStyle = "#ffde59"; // Yellow text
+            ctx.font = "bold 50px Poppins";
+            ctx.fillText(prompt, canvas.width / 2, 220);
+        }
+    </script>
+
+</body>
+</html>
